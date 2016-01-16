@@ -25,18 +25,33 @@ On the next start only new messages are added into the database.
   - TMessage:json - full json object associated with the message
 
 ## Changelog
+### v0.1.1
+- migrate from getopt to argparse
+
 ### v0.1.0
 - initial version
 
 ## Usage:
 
 ```bash
-== slack_backup.py - v0.1.0  ==
-Usage:
-    slack_backup.py --access-token=<access_token> --output-database=<database.sqlite> --debug
+usage: slack2sqlite.py [-h] [--version] [--verbose]
+                       [--access-token ACCESS_TOKEN]
+                       [--output-database OUTPUT_DATABASE]
+
+This utility saves the message history from the slack.com into the database
+SQLite. The first time you are downloading the whole message history. On the
+next start only new messages are added into the database.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --verbose             show debug information
+  --access-token ACCESS_TOKEN
+                        slack access token
+  --output-database OUTPUT_DATABASE
+                        sqlite database file
 ```
 - access_token - can be found here: https://api.slack.com/web
-- database.sqlite - output SQLite database filename
 
 ## Tips
 - To run the script periodically you can add it to your crontab.
@@ -69,17 +84,32 @@ Usage:
   - TMessage:json - полный json объект ассоциированный с сообщением
 
 ## История изменений
+### v0.1.1
+- миграция с getopt на argparse
+
 ### v0.1.0
 - первоначальная версия
 
 ## Использование:
 ```bash
-== slack_backup.py - v0.1.0  ==
-Usage:
-    slack_backup.py --access-token=<access_token> --output-database=<database.sqlite> --debug
+usage: slack2sqlite.py [-h] [--version] [--verbose]
+                       [--access-token ACCESS_TOKEN]
+                       [--output-database OUTPUT_DATABASE]
+
+This utility saves the message history from the slack.com into the database
+SQLite. The first time you are downloading the whole message history. On the
+next start only new messages are added into the database.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+  --verbose             show debug information
+  --access-token ACCESS_TOKEN
+                        slack access token
+  --output-database OUTPUT_DATABASE
+                        sqlite database file
 ```
 - access_token - получить можно здесь: https://api.slack.com/web
-- database.sqlite - выходной файл базы данных SQLite
 
 ## Советы
 - Для периодического запуска скрипта можно добавить его в crontab.
