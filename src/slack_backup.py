@@ -122,51 +122,49 @@ def backup_channel_history(db, access_token, channel_id):
         if obj['has_more'] is False:
             return None
 
+if __name__ == '__main__':
+    slack_access_token = None
+    slack_output_database = None
+    slack_debug = False
 
-slack_access_token = None
-slack_output_database = None
-slack_debug = False
+    options, remainder = getopt.getopt(sys.argv[1:], 'o:v', ['access-token=',
+                                                             'output-database=',
+                                                             'debug'])
+    for opt, arg in options:
+        if opt == '--access-token':
+            slack_access_token = arg
+        elif opt == '--output-database':
+            slack_output_database = arg
+        elif opt == '--debug':
+            slack_debug = True
 
-options, remainder = getopt.getopt(sys.argv[1:], 'o:v', ['access-token=',
-                                                         'output-database=',
-                                                         'debug'])
-for opt, arg in options:
-    if opt == '--access-token':
-        slack_access_token = arg
-    elif opt == '--output-database':
-        slack_output_database = arg
-    elif opt == '--debug':
-        slack_debug = True
+    if slack_access_token is None or slack_output_database is None:
+        usage()
+        exit(-1)
 
+    print("=== Arguments ===")
+    print("Slack access token   :", slack_access_token)
+    print("Slack output database:", slack_output_database)
 
-if slack_access_token is None or slack_output_database is None:
-    usage()
-    exit(-1)
+    print("=== Begins the backup ===")
+    print("--> create database...")
+    slack_db = SlackDb(slack_output_database)
+    slack_db.create_tables()
 
+    print("--> backup user list...")
+    backup_users(slack_db, slack_access_token)
+    print("Done!")
 
-print("=== Arguments ===")
-print("Slack access token   :", slack_access_token)
-print("Slack output database:", slack_output_database)
+    print("--> backup channel list...")
+    channel_ids, channel_names = backup_channels(slack_db, slack_access_token)
+    print("Done!")
 
-print("=== Begins the backup ===")
-print("--> create database...")
-slack_db = SlackDb(slack_output_database)
-slack_db.create_tables()
+    print("--> backup channel history...")
+    for i in range(0, len(channel_ids)):
+        print("----> channel:", channel_names[i], "(%s)" % (channel_ids[i],))
+        backup_channel_history(slack_db, slack_access_token, channel_ids[i])
+    print("Done!")
 
-print("--> backup user list...")
-backup_users(slack_db, slack_access_token)
-print("Done!")
-
-print("--> backup channel list...")
-channel_ids, channel_names = backup_channels(slack_db, slack_access_token)
-print("Done!")
-
-print("--> backup channel history...")
-for i in range(0, len(channel_ids)):
-    print("----> channel:", channel_names[i], "(%s)" % (channel_ids[i],))
-    backup_channel_history(slack_db, slack_access_token, channel_ids[i])
-print("Done!")
-
-print("--| finalize...")
-slack_db.commit()
-print("Done!")
+    print("--| finalize...")
+    slack_db.commit()
+    print("Done!")

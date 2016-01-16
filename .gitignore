@@ -58,3 +58,5 @@ target/
 
 src/.idea
 src/*.sqlite
+.idea
+src/run.sh
