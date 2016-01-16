@@ -38,8 +38,10 @@ def get_json(request):
 
 
 def backup_users(db, access_token):
-    request = "https://slack.com/api/users.list" \
-              "?token=%s&pretty=1" % (access_token,)
+    request = "https://slack.com/api/users.list"    \
+              "?token=%s"                           \
+              "&pretty=1"                           \
+              % (access_token,)
     obj = get_json(request)
 
     if 'ok' not in obj:
@@ -66,7 +68,10 @@ def backup_users(db, access_token):
 
 def backup_channels(db, access_token):
     request = "https://slack.com/api/channels.list" \
-              "?token=%s&exclude_archived=0&pretty=1" % (access_token,)
+              "?token=%s"                           \
+              "&exclude_archived=0"                 \
+              "&pretty=1"                           \
+              % (access_token,)
     obj = get_json(request)
 
     if 'ok' not in obj:
@@ -94,9 +99,13 @@ def backup_channels(db, access_token):
 def backup_channel_history(db, access_token, channel_id):
     latest = ""
     while True:
-        request = "https://slack.com/api/channels.history" \
-                  "?token=%s&channel=%s&inclusive=0" \
-                  "&count=1000&pretty=1&latest=%s" \
+        request = "https://slack.com/api/channels.history"  \
+                  "?token=%s"                               \
+                  "&channel=%s"                             \
+                  "&inclusive=0"                            \
+                  "&count=1000"                             \
+                  "&pretty=1"                               \
+                  "&latest=%s"                              \
                   % (access_token, channel_id, latest, )
         obj = get_json(request)
 
