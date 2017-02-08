@@ -60,3 +60,4 @@ src/.idea
 src/*.sqlite
 .idea
 src/run.sh
+src/slack_backup_run.sh
