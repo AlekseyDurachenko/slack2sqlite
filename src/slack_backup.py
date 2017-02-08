@@ -21,7 +21,7 @@ import json
 
 def get_json(request):
     response = urllib.request.urlopen(request)
-    str_response = response.readall().decode('utf-8')
+    str_response = response.read().decode('utf-8')
     return json.loads(str_response)
 
 
