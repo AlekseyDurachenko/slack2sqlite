@@ -91,7 +91,7 @@ class SlackDb:
     def user_add_or_update(self, user, commit=False):
         user_id = user['id']
         user_name = user['name']
-        user_color = user['color']
+        user_color = user.get('color', '000000')
 
         cursor = self.__conn.cursor()
         cursor.execute("INSERT OR REPLACE INTO TUser"
